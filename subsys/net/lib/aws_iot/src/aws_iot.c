@@ -323,13 +323,13 @@ static int aws_iot_topics_populate(char *const id, size_t id_len)
 #if defined(CONFIG_AWS_IOT_CLIENT_ID_APP)
 	err = snprintf(client_id_buf, sizeof(client_id_buf),
 		       AWS_CLIENT_ID_PREFIX, id);
-	if (err >= AWS_CLIENT_ID_LEN_MAX) {
+	if (err < 0 || err >= sizeof(client_id_buf)) {
 		return -ENOMEM;
 	}
 #else
 	err = snprintf(client_id_buf, sizeof(client_id_buf),
 		       AWS_CLIENT_ID_PREFIX, CONFIG_AWS_IOT_CLIENT_ID_STATIC);
-	if (err >= AWS_CLIENT_ID_LEN_MAX) {
+	if (err < 0 || err >= sizeof(client_id_buf)) {
 		return -ENOMEM;
 	}
 #endif
